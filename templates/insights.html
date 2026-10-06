@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Automatic insights{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">RULE-BASED SUMMARY</p><h1>Automatic insights</h1><p class="muted">Simple descriptive statements generated from the current fictional records.</p></div></div>
+<section class="insight-grid">
+  {% for insight in insights %}<article class="panel insight-card"><span class="insight-number">{{ "%02d"|format(loop.index) }}</span><p>{{ insight }}</p></article>{% endfor %}
+</section>
+<section class="panel definition"><h2>Limits of interpretation</h2><p>{{ definition }}</p><p>These are summaries of a small fictional academic sample, not representative hospital statistics. Associations in these records do not establish cause and effect or support clinical decisions.</p></section>
+{% endblock %}

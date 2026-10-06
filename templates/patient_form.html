@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ mode }} patient{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">RECORD MANAGEMENT</p><h1>{{ mode }} patient record</h1><p class="muted">Enter fictional or demo values only. Do not enter real patient information.</p></div><a class="button secondary" href="{{ url_for('patients_page') }}">Back to patients</a></div>
+<form method="post" class="panel patient-form">
+  <div class="form-grid">
+    <label>Fictional name *<input name="name" value="{{ patient.get('name', '') }}" required maxlength="100"></label>
+    <label>Demo phone *<input name="phone" value="{{ patient.get('phone', '') }}" placeholder="555-0100" required maxlength="30"></label>
+    <label>Fictional address *<input name="address" value="{{ patient.get('address', '') }}" required maxlength="160"></label>
+    <label>Age *<input type="number" name="age" min="0" max="120" value="{{ patient.get('age', '') }}" required></label>
+    <label>Department *<select name="department" required><option value="">Choose department</option>{% for item in departments %}<option value="{{ item }}" {% if patient.get('department') == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+    <label>Fictional diagnosis / label *<input name="diagnosis" value="{{ patient.get('diagnosis', '') }}" required maxlength="120"></label>
+    <label>Admission date *<input type="date" name="admission_date" value="{{ patient.get('admission_date', '') }}" required></label>
+    <label>Discharge date<input type="date" name="discharge_date" value="{{ patient.get('discharge_date') or '' }}"></label>
+    <label>Subsequent readmission date<input type="date" name="readmission_date" value="{{ patient.get('readmission_date') or '' }}"><small>Must be later than the discharge date to count as a recorded return.</small></label>
+    <label>Previous admissions<input type="number" name="previous_admissions" min="0" value="{{ patient.get('previous_admissions', 0) }}"></label>
+    <label>Follow-up status *<select name="follow_up_status" required><option value="">Choose status</option>{% for item in follow_up_statuses %}<option value="{{ item }}" {% if patient.get('follow_up_status') == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+  </div>
+  <div class="form-actions"><a class="button secondary" href="{{ url_for('patients_page') }}">Cancel</a><button class="button primary" type="submit">Save record</button></div>
+</form>
+{% endblock %}

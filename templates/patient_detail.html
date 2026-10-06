@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Patient record{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><p class="eyebrow">FICTIONAL PATIENT RECORD · #{{ patient.id }}</p><h1>{{ patient.name }}</h1><p class="muted">{{ patient.department }} · {{ patient.age }} years</p></div>
+  <div class="heading-actions"><a class="button secondary" href="{{ url_for('patient_edit', patient_id=patient.id) }}">Edit record</a><form method="post" action="{{ url_for('patient_delete', patient_id=patient.id) }}" onsubmit="return confirm('Delete this fictional demonstration record?')"><button class="button danger-outline" type="submit">Delete</button></form></div>
+</div>
+<section class="detail-grid">
+  <article class="panel"><h2>Patient and admission</h2><dl class="detail-list">
+    <div><dt>Fictional diagnosis / label</dt><dd>{{ patient.diagnosis }}</dd></div><div><dt>Demo phone</dt><dd>{{ patient.phone }}</dd></div>
+    <div><dt>Fictional address</dt><dd>{{ patient.address }}</dd></div><div><dt>Admission date</dt><dd>{{ patient.admission_date }}</dd></div>
+    <div><dt>Department</dt><dd>{{ patient.department }}</dd></div><div><dt>Length of stay</dt><dd>{{ patient.length_of_stay if patient.length_of_stay is not none else "In progress" }}{% if patient.length_of_stay is not none %} days{% endif %}</dd></div>
+    <div><dt>Previous admissions</dt><dd>{{ patient.previous_admissions }}</dd></div>
+  </dl></article>
+  <article class="panel"><h2>Discharge and follow-up</h2><dl class="detail-list">
+    <div><dt>Discharge date</dt><dd>{{ patient.discharge_date or "Not discharged" }}</dd></div>
+    <div><dt>Subsequent readmission date</dt><dd>{{ patient.readmission_date or "No subsequent return recorded" }}</dd></div>
+    <div><dt>Follow-up status</dt><dd>{{ patient.follow_up_status }}</dd></div>
+  </dl><p class="callout">{{ "A subsequent hospital return is recorded in the available data." if patient.readmission_date else "No subsequent readmission is recorded in the available synthetic data. This does not mean the patient will never return." }}</p></article>
+</section>
+{% endblock %}

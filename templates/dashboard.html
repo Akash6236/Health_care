@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><p class="eyebrow">OVERVIEW</p><h1>Patient-flow dashboard</h1><p class="muted">A summary of recorded admissions, discharges, and returns in the fictional sample.</p></div>
+  <a class="button primary" href="{{ url_for('patient_new') }}">Add patient record</a>
+</div>
+<section class="kpi-grid">
+  <article class="kpi"><span>Total admissions</span><strong>{{ stats.admitted }}</strong><small>Records in the dataset</small></article>
+  <article class="kpi"><span>Discharged</span><strong>{{ stats.discharged }}</strong><small>With a discharge date</small></article>
+  <article class="kpi"><span>Recorded returns</span><strong>{{ stats.readmitted }}</strong><small>With a later readmission date</small></article>
+  <article class="kpi"><span>Readmission rate</span><strong>{{ stats.readmission_rate }}%</strong><small>Among discharged records</small></article>
+</section>
+<section class="chart-grid">
+  <article class="panel chart-panel"><div class="panel-heading"><div><h2>Monthly patient flow</h2><p>Six latest calendar months represented in the dataset</p></div></div><canvas class="chart" data-chart="{{ trend_chart|tojson|forceescape }}" aria-label="Monthly admission and recorded readmission trend"></canvas></article>
+  <article class="panel chart-panel"><div class="panel-heading"><div><h2>Department comparison</h2><p>Observed readmission rate among discharged records</p></div></div><canvas class="chart" data-chart="{{ department_chart|tojson|forceescape }}" aria-label="Department readmission rates"></canvas></article>
+</section>
+<section class="panel definition"><h2>How to read these figures</h2><p>{{ definition }}</p><p>Average recorded length of stay: <strong>{{ stats.average_stay }} days</strong>. Aggregate patient flow: admission → department → treatment period → discharge → follow-up → possible recorded readmission.</p></section>
+{% endblock %}

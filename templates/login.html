@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Demo login{% endblock %}
+{% block content %}
+<section class="login-wrap">
+  <div class="login-card">
+    <p class="eyebrow">LOCAL ACADEMIC PROTOTYPE</p>
+    <h1>Sign in to the demo</h1>
+    <p class="muted">Use the demonstration account to explore synthetic readmission analytics.</p>
+    <form method="post" class="stack-form">
+      <label>Username<input name="username" autocomplete="username" required autofocus></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+      <button class="button primary full" type="submit">Sign in</button>
+    </form>
+    <div class="demo-note"><strong>Demo credentials</strong><br>Username: <code>admin</code><br>Password: <code>admin123</code></div>
+    <p class="small muted">These fixed credentials are for academic demonstration only and do not provide production-level security.</p>
+  </div>
+</section>
+{% endblock %}

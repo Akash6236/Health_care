@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Readmission risk estimates{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">BASIC MACHINE-LEARNING DEMONSTRATION</p><h1>Readmission risk estimates</h1><p class="muted">Logistic Regression estimates observed patterns in the fictional dataset only.</p></div></div>
+<div class="warning-banner"><strong>Academic demonstration only.</strong> {{ disclaimer }}</div>
+<section class="panel model-summary">
+  <div><h2>What the model demonstrates</h2><p>Numeric inputs are standardized, categorical inputs are one-hot encoded, and Logistic Regression is trained to estimate the probability of a recorded readmission. Risk bands are descriptive thresholds, not medical categories.</p></div>
+  <div class="evaluation"><span>Held-out accuracy</span><strong>{% if accuracy is not none %}{{ accuracy }}%{% else %}Unavailable{% endif %}</strong><small>Small synthetic sample; evaluation varies with the records.</small></div>
+</section>
+<section class="panel factors"><h2>Features used</h2><div class="tag-list">{% for factor in factors %}<span class="tag">{{ factor }}</span>{% endfor %}</div></section>
+<section class="panel table-panel">
+  <div class="table-meta"><div><h2>Estimated risk scores</h2><p class="muted">Scores describe model-estimated probability of an observed dataset label.</p></div><span>{{ predictions|length }} discharged records</span></div>
+  <div class="table-scroll"><table><thead><tr><th>Patient</th><th>Department</th><th>Age</th><th>Previous admissions</th><th>Follow-up</th><th>Estimated probability</th><th>Demo band</th></tr></thead><tbody>
+  {% for patient in predictions %}<tr><td><a class="table-link" href="{{ url_for('patient_detail', patient_id=patient.id) }}">{{ patient.name }}</a></td><td>{{ patient.department }}</td><td>{{ patient.age }}</td><td>{{ patient.previous_admissions }}</td><td>{{ patient.follow_up_status }}</td><td><div class="score-cell"><span>{{ patient.risk_score }}%</span><span class="score-track"><i class="score-fill {{ patient.risk_category|lower }}" style="width: {{ patient.risk_score }}%"></i></span></div></td><td><span class="pill {{ patient.risk_category|lower }}">{{ patient.risk_category }}</span></td></tr>
+  {% else %}<tr><td colspan="7" class="empty">Risk estimates are unavailable: the discharged records need at least eight records and at least two examples of each observed outcome for a stratified demonstration split.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+<section class="panel definition"><h2>Interpretation</h2><p>Risk probabilities are estimates from the provided synthetic sample and may be unreliable on small or changed data. They do not diagnose, recommend treatment, predict a certain outcome, or replace healthcare professionals.</p></section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">AGGREGATE ANALYSIS</p><h1>Patient-flow analytics</h1><p class="muted">Descriptive analysis of this small fictional dataset; not real-world hospital statistics.</p></div></div>
+<section class="kpi-grid three">
+  <article class="kpi"><span>Average length of stay</span><strong>{{ stats.average_stay }} days</strong><small>Among discharged records</small></article>
+  <article class="kpi"><span>Readmission rate</span><strong>{{ stats.readmission_rate }}%</strong><small>{{ stats.readmitted }} of {{ stats.discharged }} discharged records</small></article>
+  <article class="kpi"><span>Admissions in records</span><strong>{{ stats.admitted }}</strong><small>All departments combined</small></article>
+</section>
+<section class="chart-grid">
+  <article class="panel chart-panel"><div class="panel-heading"><div><h2>Department counts</h2><p>Discharged records and recorded returns</p></div></div><canvas class="chart" data-chart="{{ department_chart|tojson|forceescape }}" aria-label="Department patient counts"></canvas></article>
+  <article class="panel chart-panel"><div class="panel-heading"><div><h2>Follow-up outcomes</h2><p>Counts and recorded returns by status</p></div></div><canvas class="chart" data-chart="{{ followup_chart|tojson|forceescape }}" aria-label="Follow-up status counts"></canvas></article>
+</section>
+<section class="panel table-panel"><div class="table-meta"><div><h2>Department comparison</h2><p class="muted">Rates use discharged records in each department as the denominator.</p></div></div><div class="table-scroll"><table><thead><tr><th>Department</th><th>Discharged</th><th>Readmitted</th><th>Observed rate</th><th>Average stay</th></tr></thead><tbody>{% for item in departments %}<tr><td>{{ item.department }}</td><td>{{ item.discharged }}</td><td>{{ item.readmitted }}</td><td>{{ item.rate }}%</td><td>{{ item.average_stay }} days</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel definition"><h2>Readmission definition</h2><p>{{ definition }}</p></section>
+{% endblock %}

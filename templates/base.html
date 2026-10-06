@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Readmission Analytics{% endblock %} · Academic Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/charts.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('dashboard') if session.get('logged_in') else url_for('login') }}">
+      <span class="brand-mark">+</span>
+      <span>Patient Flow <small>Academic Analytics</small></span>
+    </a>
+    {% if session.get('logged_in') %}
+    <nav aria-label="Main navigation">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('patients_page') }}">Patients</a>
+      <a href="{{ url_for('analytics') }}">Analytics</a>
+      <a href="{{ url_for('risk') }}">Risk estimates</a>
+      <a href="{{ url_for('insights') }}">Insights</a>
+      <form action="{{ url_for('logout') }}" method="post"><button class="nav-logout" type="submit">Log out</button></form>
+    </nav>
+    {% endif %}
+  </header>
+  <main class="page">
+    {% if session.get('logged_in') %}
+    <div class="dataset-banner"><strong>Fictional Academic Dataset</strong><span>Local single-user demonstration · not for clinical use</span></div>
+    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <section class="flash-list" aria-live="polite">
+        {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+      </section>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    <p>{{ project_boundary }}</p>
+    <p>All displayed patient records are fictional demonstration data.</p>
+  </footer>
+</body>
+</html>
